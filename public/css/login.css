@@ -1,0 +1,68 @@
+/* root */
+
+:root {
+  --primary: #97cb4c;
+}
+
+/* fonts */
+
+@font-face {
+  font-family: SpaceMono;
+  src: url(../fonts/SpaceMono-Regular.ttf);
+}
+
+/* reset */
+
+* {
+  margin: 0;
+}
+
+button {
+  border: none;
+}
+
+/* styles */
+
+main {
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  font-family: SpaceMono;
+}
+
+.container,
+form,
+.login,
+.password {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h1 {
+  font-size: 4vw;
+  margin-bottom: 20px;
+}
+
+.login,
+.password {
+  align-items: baseline;
+}
+
+#login,
+#password {
+  margin-top: 10px;
+}
+
+button {
+  color: #fff;
+  background-color: var(--primary);
+  padding: 25px 45px;
+  font-size: 16px;
+  font-family: SpaceMono;
+}
+
+button:hover {
+  cursor: pointer;
+}

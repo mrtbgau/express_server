@@ -4,6 +4,25 @@ import session from "express-session";
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "node:fs";
+import { createServer } from "http";
+import { Server } from "socket.io";
+import { buildSchema } from "graphql";
+import { graphqlHTTP } from "express-graphql";
+import { PrismaClient } from "@prisma/client";
+
+const schema = buildSchema(`
+  type Query {
+    hello: String
+  }
+`);
+
+const root = {
+  hello: () => {
+    return "Hello world!";
+  },
+};
+
+const prisma = new PrismaClient();
 
 const app = express();
 const port = 8080;
@@ -13,9 +32,18 @@ const __dirname = path.dirname(__filename);
 
 app.set("view engine", "twig");
 app.set("views", "./views");
+app.set("prisma", prisma);
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+  "/graphql",
+  graphqlHTTP({
+    schema: schema,
+    rootValue: root,
+    graphiql: true,
+  })
+);
 
 app.use(
   session({
@@ -34,7 +62,9 @@ app.use((req, res, next) => {
   res.locals.pages = [
     { name: "Accueil", url: "/home" },
     { name: "Chapitre 1", url: "/chapter/1" },
-    { name: "About", url: "/about" },
+    { name: "Messagerie", url: "/chat" },
+    { name: "Autres", url: "/about" },
+    { name: "Se déconnecter", url: "/logout" },
   ];
   next();
 });
@@ -43,7 +73,7 @@ const checkLogin = (req, res, next) => {
   if (req.session && req.session.user) {
     return next();
   } else {
-    res.send("Non autorisé");
+    res.render("unauthorized");
   }
 };
 
@@ -110,6 +140,10 @@ app.get("/download", checkLogin, async (req, res) => {
   });
 });
 
+app.get("/chat", (req, res) => {
+  res.render("chat");
+});
+
 app.use((req, res, next) => {
-  res.status(404).render("404");
+  res.status(404).render("notFound");
 });

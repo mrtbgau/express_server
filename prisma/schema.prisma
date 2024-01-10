@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Artiste {
+  IdArtiste Int       @id @default(autoincrement()) @db.UnsignedInt
+  pseudo    String?   @db.VarChar(50)
+  idStyle   Int?      @db.UnsignedInt
+  Style     Style?    @relation(fields: [idStyle], references: [idStyle], onDelete: Restrict, onUpdate: Restrict, map: "Artiste_ibfk_1")
+  Realise   Realise[]
+
+  @@index([idStyle], map: "idStyle")
+}
+
+model Concert {
+  idConcert          Int         @id @default(autoincrement()) @db.UnsignedInt
+  dateConcert        DateTime?   @db.Date
+  nbrPlaceDisponible Int?
+  idVille            Int         @db.UnsignedInt
+  Ville              Ville       @relation(fields: [idVille], references: [idVille], onUpdate: Restrict, map: "Concert_ibfk_1")
+  Joue               Joue[]
+  Participe          Participe[]
+  Realise            Realise[]
+
+  @@index([idVille], map: "idVille")
+}
+
+model Joue {
+  idConcert Int     @db.UnsignedInt
+  idStyle   Int     @db.UnsignedInt
+  Concert   Concert @relation(fields: [idConcert], references: [idConcert], onUpdate: Restrict, map: "Joue_ibfk_1")
+  Style     Style   @relation(fields: [idStyle], references: [idStyle], onUpdate: Restrict, map: "Joue_ibfk_2")
+
+  @@id([idConcert, idStyle])
+  @@index([idStyle], map: "idStyle")
+}
+
+model Participe {
+  idConcert  Int      @db.UnsignedInt
+  idVisiteur Int      @db.UnsignedInt
+  Concert    Concert  @relation(fields: [idConcert], references: [idConcert], onUpdate: Restrict, map: "Participe_ibfk_1")
+  Visiteur   Visiteur @relation(fields: [idVisiteur], references: [idVisiteur], onUpdate: Restrict, map: "Participe_ibfk_2")
+
+  @@id([idConcert, idVisiteur])
+  @@index([idVisiteur], map: "idVisiteur")
+}
+
+model Realise {
+  IdArtiste Int     @db.UnsignedInt
+  idConcert Int     @db.UnsignedInt
+  Artiste   Artiste @relation(fields: [IdArtiste], references: [IdArtiste], onUpdate: Restrict, map: "Realise_ibfk_1")
+  Concert   Concert @relation(fields: [idConcert], references: [idConcert], onUpdate: Restrict, map: "Realise_ibfk_2")
+
+  @@id([IdArtiste, idConcert])
+  @@index([idConcert], map: "idConcert")
+}
+
+model Style {
+  idStyle     Int       @id @default(autoincrement()) @db.UnsignedInt
+  libelle     String?   @db.VarChar(50)
+  description String?   @db.VarChar(5000)
+  Artiste     Artiste[]
+  Joue        Joue[]
+}
+
+model Ville {
+  idVille     Int        @id @default(autoincrement()) @db.UnsignedInt
+  nom         String?    @db.VarChar(50)
+  coordonnees String?    @db.Text
+  Concert     Concert[]
+  Visiteur    Visiteur[]
+}
+
+model Visiteur {
+  idVisiteur     Int         @id @default(autoincrement()) @db.UnsignedInt
+  nom            String?     @db.VarChar(50)
+  prenom         String?     @db.VarChar(50)
+  email          String?     @db.VarChar(50)
+  age            Int?
+  adresse        String?     @db.VarChar(255)
+  idParrain      Int?        @db.UnsignedInt
+  idVille        Int?        @db.UnsignedInt
+  Participe      Participe[]
+  Visiteur       Visiteur?   @relation("VisiteurToVisiteur", fields: [idParrain], references: [idVisiteur], onDelete: Restrict, onUpdate: Restrict, map: "Visiteur_ibfk_1")
+  other_Visiteur Visiteur[]  @relation("VisiteurToVisiteur")
+  Ville          Ville?      @relation(fields: [idVille], references: [idVille], onDelete: Restrict, onUpdate: Restrict, map: "Visiteur_ibfk_2")
+
+  @@index([idParrain], map: "idParrain")
+  @@index([idVille], map: "idVille")
+}

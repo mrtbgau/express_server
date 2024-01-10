@@ -1,0 +1,52 @@
+/* root */
+
+:root {
+  --primary: #97cb4c;
+}
+
+/* fonts */
+
+@font-face {
+  font-family: Inconsolata;
+  src: url(../fonts/Inconsolata-Regular.ttf);
+}
+
+@font-face {
+  font-family: SpaceMono;
+  src: url(../fonts/SpaceMono-Regular.ttf);
+}
+
+/* reset */
+
+li {
+  list-style-type: none;
+}
+
+img {
+  max-width: 5%;
+}
+
+/* styles */
+
+nav {
+  background-color: var(--primary);
+}
+
+ul {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 25px 45px;
+}
+
+ul a {
+  text-decoration: none;
+  color: white;
+  font-family: Incosolata;
+}
+
+h1 {
+  font-size: 3vw;
+  font-family: SpaceMono;
+  margin-bottom: 20px;
+  text-align: center;
+}

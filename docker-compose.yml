@@ -1,0 +1,45 @@
+#https://david.dev/how-to-install-mariadb-phpmyadmin-with-docker-compose
+version: '3'
+
+volumes:
+  mariadb:
+    driver: local
+
+networks:
+    db:
+        driver: bridge
+
+services:
+  mariadb:
+    image: mariadb
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpwd
+      MYSQL_USER:  formation
+      MYSQL_PASSWORD: formation49+
+    expose:
+        - "4000"
+    ports:
+        - "4000:3306"
+    volumes:
+     - mariadb:/var/lib/mysql
+    networks:
+      db:
+              
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    expose:
+      - "4001"
+    ports:
+      - "4001:80"
+    environment:
+      - PMA_HOST=mariadb
+      - PMA_PORT=3306 
+    networks:
+      db:
+
+#to run : docker-compose --project-name liveaddict_bdd up -d --remove-orphans
+#to run : docker-compose start/stop 
+# redémarrage du service : Net stop com.docker.service / Net start com.docker.service
+#& 'C:\Program Files\Docker\Docker\DockerCli.exe' -SwitchDaemon 
