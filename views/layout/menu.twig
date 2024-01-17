@@ -1,8 +1,23 @@
 <nav>
-  <ul>
+  <ul class="nav-list">
     {% for page in pages %}
-    <li>
-      <a href="{{ page.url }}">{{ page.name }}</a>
+    <li {% if page.url == activePage %}class="active" aria-current="page" {% endif %}>
+        {% set icon = '' %}
+        {% if page.name == 'Accueil' %}
+          {% set icon = 'icons/home.svg' %}
+        {% elseif page.name == 'Messagerie' %}
+          {% set icon = 'icons/chat.svg' %}
+        {% elseif page.name == 'Se déconnecter' %}
+          {% set icon = 'icons/logout.svg' %}
+        {% elseif page.name == 'Autres' %}
+          {% set icon = 'icons/file-download.svg' %}
+        {% endif %}
+      <a href="{{ page.url }}">
+        {% if icon %}
+          <img src="{{ icon }}">
+        {% endif %}
+        {{ page.name }}
+      </a>
     </li>
     {% endfor %}
   </ul>

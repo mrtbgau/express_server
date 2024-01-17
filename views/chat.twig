@@ -3,8 +3,59 @@
   <head>
     <meta charset="utf-8" />
     <title>Chat</title>
+    <link rel="stylesheet" href="css/main.css" />
   </head>
   <body>
+    {% include ('layout/menu.twig') %}
+    <main>
+      <div class="join">
+        <h2>Rejoindre le chat</h2>
+        <div class="form-input">
+          <label for="pseudo">Ton pseudo :</label>
+          <input type="text" name="pseudo" id="pseudo" />
+        </div>
+        <div class="form-input">
+          <button>Rejoindre</button>
+        </div>
+      </div>
+      <div class="chat disable">
+        <ul id="messages"></ul>
+        <form id="form" action="">
+          <input id="input" autocomplete="off" /><button>Send</button>
+        </form>
+      </div>
+    </main>
     <script type="text/javascript" src="socket.io/socket.io.js"></script>
+    <script>
+      const chat = document.querySelector(".chat");
+      const join = document.querySelector(".join");
+      const btnJoin = document.querySelector(".form-input > button");
+
+      btnJoin.addEventListener("click", () => {
+        chat.classList.remove("disable");
+        join.style.display = "none";
+      });
+
+      const socket = io();
+      const form = document.getElementById("form");
+      const input = document.getElementById("input");
+
+      const messages = document.getElementById("messages");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (input.value) {
+          socket.emit("chat message", input.value);
+          input.value = "";
+        }
+      });
+
+      socket.on("chat message", (msg) => {
+        const item = document.createElement("li");
+        item.textContent = msg;
+        messages.appendChild(item);
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+    </script>
   </body>
 </html>
