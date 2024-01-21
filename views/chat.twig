@@ -8,14 +8,17 @@
   <body>
     {% include ('layout/menu.twig') %}
     <main>
+      <h1>Bienvenue {{ user }}</h1>
       <div class="join">
-        <h2>Rejoindre le chat</h2>
-        <div class="form-input">
-          <label for="pseudo">Ton pseudo :</label>
-          <input type="text" name="pseudo" id="pseudo" />
-        </div>
-        <div class="form-input">
-          <button>Rejoindre</button>
+        <div class="form">
+          <h2>Rejoindre le chat</h2>
+          <div class="form-input">
+            <label for="pseudo">Ton pseudo :</label>
+            <input type="text" name="pseudo" id="pseudo" />
+          </div>
+          <div class="form-input">
+            <button>Rejoindre</button>
+          </div>
         </div>
       </div>
       <div class="chat disable">

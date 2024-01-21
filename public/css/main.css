@@ -27,6 +27,11 @@ li {
   list-style-type: none;
 }
 
+a {
+  text-decoration: none;
+  color: white;
+}
+
 /* styles */
 
 html {
@@ -60,9 +65,7 @@ nav {
 }
 
 .nav-list a {
-  color: white;
   display: block;
-  text-decoration: none;
   display: flex;
   align-items: center;
 }
@@ -130,6 +133,7 @@ nav {
 
 h1 {
   font-size: 3vw;
+  color: black;
 }
 
 .disable {
@@ -219,4 +223,26 @@ h1 {
 }
 #messages > li:nth-child(odd) {
   background: #efefef;
+}
+
+.datas-links {
+  display: grid;
+  gap: 20px;
+}
+
+.datas-links > a::before {
+  content: "->";
+  margin-right: 10px;
+}
+
+.datas-links > a {
+  width: fit-content;
+}
+
+.datas-links > a:hover {
+  border-bottom: 3px solid white;
+}
+
+.datas-links > a::before:hover {
+  border-bottom: none; /* Annulez le style :hover spécifique à ::before */
 }

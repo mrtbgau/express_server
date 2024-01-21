@@ -9,6 +9,7 @@ import { Server } from "socket.io";
 import { buildSchema } from "graphql";
 import { graphqlHTTP } from "express-graphql";
 import { PrismaClient } from "@prisma/client";
+import apiRouter from "./routes/api.js";
 
 const schema = buildSchema(`
   type Query {
@@ -56,6 +57,8 @@ app.use(
   })
 );
 
+app.use("/api", apiRouter);
+
 app.use((req, res, next) => {
   res.locals.user = req.session.user;
   next();
@@ -64,9 +67,10 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   res.locals.pages = [
     { name: "Accueil", url: "/home" },
-    { name: "Chapitre 1", url: "/chapter/1" },
     { name: "Messagerie", url: "/chat" },
-    { name: "Autres", url: "/about" },
+    { name: "Télécharger", url: "/download" },
+    { name: "Not Found", url: "/undefined"},
+    { name: "API", url: "/api" },
     { name: "Se déconnecter", url: "/logout" },
   ];
   next();
@@ -111,13 +115,8 @@ app.get("/home", checkLogin, (req, res) => {
   res.render("home", { activePage: "/home" });
 });
 
-app.get("/chapter/:num", checkLogin, (req, res) => {
-  const num = req.params.num;
-  res.render("chapter", { num, activePage: `/chapter/${num}` });
-});
-
-app.get("/about", checkLogin, (req, res) => {
-  res.render("about", { activePage: "/about" });
+app.get("/api", checkLogin, (req, res) => {
+  res.render("api", { activePage: "/api" });
 });
 
 app.get("/download", checkLogin, async (req, res) => {
@@ -145,97 +144,6 @@ app.get("/download", checkLogin, async (req, res) => {
 
 app.get("/chat", (req, res) => {
   res.render("chat", { activePage: "/chat" });
-});
-
-app.get("/styles", async (req, res) => {
-  const styles = await prisma.style.findMany();
-  res.json(styles);
-});
-
-app.get("/artistes", async (req, res) => {
-  const artistes = await prisma.artiste.findMany();
-  res.json(artistes);
-});
-
-app.get("/villes/:num/concerts", async (req, res) => {
-  const num = req.params.num;
-  const concertsParVille = await prisma.concert.findMany({
-    select: {
-      idConcert: true,
-      Ville: {
-        select: {
-          nom: true,
-        },
-      },
-    },
-    where: {
-      idVille: parseInt(num),
-    },
-  });
-  res.json(concertsParVille);
-});
-
-app.get("/villes/:num/visiteurs", async (req, res) => {
-  const num = req.params.num;
-  const visiteursParVille = await prisma.visiteur.findMany({
-    select: {
-      idVisiteur: true,
-      Ville: {
-        select: {
-          nom: true,
-        },
-      },
-    },
-    where: {
-      idVille: parseInt(num),
-    },
-  });
-  res.json(visiteursParVille);
-});
-
-app.get("/artistes/:num/concerts", async (req, res) => {
-  const num = req.params.num;
-  const concertsParArtistes = await prisma.artiste.findMany({
-    select: {
-      pseudo: true,
-      Realise: {
-        select: {
-          Concert: {
-            select: {
-              idConcert: true,
-            },
-          },
-        },
-      },
-    },
-    where: {
-      IdArtiste: parseInt(num),
-    },
-  });
-  res.json(concertsParArtistes);
-});
-
-app.get("/villes/:numVille/styles/:numStyle/concerts", async (req, res) => {
-  const numVille = req.params.numVille;
-  const numStyle = req.params.numStyle;
-
-  const concerts = await prisma.concert.findMany({
-    select: {
-      idConcert: true,
-    },
-    where: {
-      Joue: {
-        some: {
-          Style: {
-            idStyle: parseInt(numStyle),
-          },
-        },
-      },
-      idVille: parseInt(numVille),
-    },
-  });
-
-  res.json(concerts);
 });
 
 app.use((req, res, next) => {

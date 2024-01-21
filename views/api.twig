@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Autres</title>
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+  <body>
+    {% include ('layout/menu.twig') %}
+    <main>
+      <h1>Bienvenue {{ user }}</h1>
+      <div class="datas-links">
+        <a href="/api/styles" target="_blank" id="api-styles"
+          >Ensemble des styles</a
+        >
+        <a href="/api/artistes" target="_blank" id="api-artistes"
+          >Ensemble des artistes</a
+        >
+        <a href="/api/villes/2/concerts" target="_blank" id="api-concerts-ville"
+          >Ensemble des concerts d'une ville</a
+        >
+        <a href="/api/villes/4/visiteurs" target="_blank" id="api-visiteurs_ville"
+          >Ensemble des visiteurs d'une ville</a
+        >
+        <a href="/api/artistes/3/concerts" target="_blank" id="api-concerts-artiste"
+          >Ensemble des concerts d'un artiste</a
+        >
+        <a
+          href="/api/villes/1/styles/6/concerts"
+          target="_blank"
+          id="api-concerts-style-ville"
+          >Ensemble des concerts d'un style pour une ville</a
+        >
+        <a href="" target="_blank" id="api-proportion-styles-ville"
+          >Proportion des styles écoutés par ville</a
+        >
+      </div>
+    </main>
+  </body>
+</html>

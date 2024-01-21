@@ -9,8 +9,12 @@
           {% set icon = 'icons/chat.svg' %}
         {% elseif page.name == 'Se déconnecter' %}
           {% set icon = 'icons/logout.svg' %}
-        {% elseif page.name == 'Autres' %}
+        {% elseif page.name == 'Télécharger' %}
           {% set icon = 'icons/file-download.svg' %}
+        {% elseif page.name == 'Not Found' %}
+          {% set icon = 'icons/error-404.svg' %}
+        {% elseif page.name == 'API' %}
+          {% set icon = 'icons/api.svg' %}
         {% endif %}
       <a href="{{ page.url }}">
         {% if icon %}
