@@ -1,5 +1,14 @@
 import { Router } from "express";
+import express from "express";
+import { PrismaClient } from "@prisma/client";
+
+const app = express();
+
 const apiRouter = Router();
+
+const prisma = new PrismaClient();
+
+app.set("prisma", prisma);
 
 apiRouter.get("/styles", async (req, res) => {
   const styles = await prisma.style.findMany();

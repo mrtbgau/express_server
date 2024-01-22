@@ -5,36 +5,155 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Autres</title>
     <link rel="stylesheet" href="css/main.css" />
+    <script defer src="js/main.js"></script>
   </head>
   <body>
     {% include ('layout/menu.twig') %}
     <main>
-      <h1>Bienvenue {{ user }}</h1>
       <div class="datas-links">
-        <a href="/api/styles" target="_blank" id="api-styles"
-          >Ensemble des styles</a
-        >
-        <a href="/api/artistes" target="_blank" id="api-artistes"
-          >Ensemble des artistes</a
-        >
-        <a href="/api/villes/2/concerts" target="_blank" id="api-concerts-ville"
-          >Ensemble des concerts d'une ville</a
-        >
-        <a href="/api/villes/4/visiteurs" target="_blank" id="api-visiteurs_ville"
-          >Ensemble des visiteurs d'une ville</a
-        >
-        <a href="/api/artistes/3/concerts" target="_blank" id="api-concerts-artiste"
-          >Ensemble des concerts d'un artiste</a
-        >
-        <a
-          href="/api/villes/1/styles/6/concerts"
-          target="_blank"
-          id="api-concerts-style-ville"
-          >Ensemble des concerts d'un style pour une ville</a
-        >
-        <a href="" target="_blank" id="api-proportion-styles-ville"
-          >Proportion des styles écoutés par ville</a
-        >
+        <ul>
+          <li>
+            <a href="/api/styles" target="_blank" id="api-styles"
+              >Ensemble des styles</a
+            >
+          </li>
+          <li>
+            <a href="/api/artistes" target="_blank" id="api-artistes"
+              >Ensemble des artistes</a
+            >
+          </li>
+          <li>
+            <p>Ensemble des concerts d'une ville</p>
+            <ul>
+              <li>
+                <a href="/api/villes/1/concerts" target="_blank">Angers</a>
+              </li>
+              <li>
+                <a href="/api/villes/2/concerts" target="_blank">Paris</a>
+              </li>
+              <li>
+                <a href="/api/villes/3/concerts" target="_blank">Marseille</a>
+              </li>
+              <li><a href="/api/villes/4/concerts" target="_blank">Lyon</a></li>
+              <li>
+                <a href="/api/villes/5/concerts" target="_blank">Lille</a>
+              </li>
+              <li>
+                <a href="/api/villes/6/concerts" target="_blank">Nantes</a>
+              </li>
+              <li>
+                <a href="/api/villes/7/concerts" target="_blank">Bordeaux</a>
+              </li>
+              <li><a href="/api/villes/8/concerts" target="_blank">Paux</a></li>
+              <li>
+                <a href="/api/villes/9/concerts" target="_blank">Strasbourg</a>
+              </li>
+              <li>
+                <a href="/api/villes/10/concerts" target="_blank">Toulouse</a>
+              </li>
+              <li>
+                <a href="/api/villes/11/concerts" target="_blank">Toulon</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p>Ensemble des concerts d'une ville</p>
+            <ul>
+              <li>
+                <a href="/api/villes/1/visiteurs" target="_blank">Angers</a>
+              </li>
+              <li>
+                <a href="/api/villes/2/visiteurs" target="_blank">Paris</a>
+              </li>
+              <li>
+                <a href="/api/villes/3/visiteurs" target="_blank">Marseille</a>
+              </li>
+              <li>
+                <a href="/api/villes/4/visiteurs" target="_blank">Lyon</a>
+              </li>
+              <li>
+                <a href="/api/villes/5/visiteurs" target="_blank">Lille</a>
+              </li>
+              <li>
+                <a href="/api/villes/6/visiteurs" target="_blank">Nantes</a>
+              </li>
+              <li>
+                <a href="/api/villes/7/visiteurs" target="_blank">Bordeaux</a>
+              </li>
+              <li>
+                <a href="/api/villes/8/visiteurs" target="_blank">Paux</a>
+              </li>
+              <li>
+                <a href="/api/villes/9/visiteurs" target="_blank">Strasbourg</a>
+              </li>
+              <li>
+                <a href="/api/villes/10/visiteurs" target="_blank">Toulouse</a>
+              </li>
+              <li>
+                <a href="/api/villes/11/visiteurs" target="_blank">Toulon</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <p>Ensemble des concerts d'une ville</p>
+            <ul>
+              <li>
+                <a href="/api/artistes/1/concerts" target="_blank"
+                  >Jean-Jacques Goldman</a
+                >
+              </li>
+              <li>
+                <a href="/api/artistes/2/concerts" target="_blank">Soprano</a>
+              </li>
+              <li>
+                <a href="/api/artistes/3/concerts" target="_blank"
+                  >Mylène Farmer</a
+                >
+              </li>
+              <li>
+                <a href="/api/artistes/4/concerts" target="_blank">Stromae</a>
+              </li>
+              <li>
+                <a href="/api/artistes/5/concerts" target="_blank"
+                  >Kendji Girac</a
+                >
+              </li>
+              <li>
+                <a href="/api/artistes/6/concerts" target="_blank">Vianey</a>
+              </li>
+              <li>
+                <a href="/api/artistes/7/concerts" target="_blank">M</a>
+              </li>
+              <li>
+                <a href="/api/artistes/8/concerts" target="_blank">Gims</a>
+              </li>
+              <li>
+                <a href="/api/artistes/9/concerts" target="_blank">Zazie</a>
+              </li>
+              <li>
+                <a href="/api/artistes/10/concerts" target="_blank"
+                  >Julien Doré</a
+                >
+              </li>
+              <li>
+                <a href="/api/artistes/11/concerts" target="_blank">Louane</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <a
+              href="/api/villes/1/styles/6/concerts"
+              target="_blank"
+              id="api-concerts-style-ville"
+              >Ensemble des concerts d'un style pour une ville</a
+            >
+          </li>
+          <li>
+            <a href="" target="_blank" id="api-proportion-styles-ville"
+              >Proportion des styles écoutés par ville</a
+            >
+          </li>
+        </ul>
       </div>
     </main>
   </body>

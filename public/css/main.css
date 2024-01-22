@@ -21,6 +21,7 @@
 /* reset */
 * {
   box-sizing: border-box;
+  margin: 0;
 }
 
 li {
@@ -46,6 +47,12 @@ body {
   color: white;
 }
 
+h1 {
+  font-size: 2vw;
+  color: black;
+  text-align: center;
+}
+
 nav {
   background: var(--nav-bg);
   position: fixed;
@@ -53,6 +60,10 @@ nav {
   bottom: 0;
   left: 0;
   padding-block: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .nav-list {
@@ -129,11 +140,6 @@ nav {
 
 .nav-list li:nth-child(3) a {
   view-transition-name: test-3;
-}
-
-h1 {
-  font-size: 3vw;
-  color: black;
 }
 
 .disable {
@@ -225,24 +231,28 @@ h1 {
   background: #efefef;
 }
 
-.datas-links {
+.datas-links > ul > li > ul {
+  display: none;
+}
+
+.datas-links > ul {
   display: grid;
   gap: 20px;
 }
 
-.datas-links > a::before {
+.datas-links a::before,
+.datas-links p::before {
   content: "->";
   margin-right: 10px;
 }
 
-.datas-links > a {
+.datas-links a,
+.datas-links p {
   width: fit-content;
 }
 
-.datas-links > a:hover {
+.datas-links a:hover,
+.datas-links p:hover {
   border-bottom: 3px solid white;
-}
-
-.datas-links > a::before:hover {
-  border-bottom: none; /* Annulez le style :hover spécifique à ::before */
+  cursor: pointer;
 }

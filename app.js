@@ -1,15 +1,21 @@
-import express from "express";
-import bodyParser from "body-parser";
-import session from "express-session";
+/* Modules de base */
 import path from "path";
 import { fileURLToPath } from "url";
 import fs from "node:fs";
+
+/* Bibliothèques externes */
+import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { buildSchema } from "graphql";
 import { graphqlHTTP } from "express-graphql";
-import { PrismaClient } from "@prisma/client";
+
+/* Modules internes */
 import apiRouter from "./routes/api.js";
+
+/* Middlewares */
+import bodyParser from "body-parser";
+import session from "express-session";
 
 const schema = buildSchema(`
   type Query {
@@ -23,8 +29,6 @@ const root = {
   },
 };
 
-const prisma = new PrismaClient();
-
 const app = express();
 const port = 8080;
 
@@ -36,7 +40,6 @@ const __dirname = path.dirname(__filename);
 
 app.set("view engine", "twig");
 app.set("views", "./views");
-app.set("prisma", prisma);
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));

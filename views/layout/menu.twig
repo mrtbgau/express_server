@@ -1,4 +1,5 @@
 <nav>
+  <h1>Bienvenue <br> {{ user }}</h1>
   <ul class="nav-list">
     {% for page in pages %}
     <li {% if page.url == activePage %}class="active" aria-current="page" {% endif %}>
