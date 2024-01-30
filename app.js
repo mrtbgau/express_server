@@ -70,10 +70,10 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   res.locals.pages = [
     { name: "Accueil", url: "/home" },
+    { name: "API", url: "/api" },
     { name: "Messagerie", url: "/chat" },
     { name: "Télécharger", url: "/download" },
     { name: "Not Found", url: "/undefined"},
-    { name: "API", url: "/api" },
     { name: "Se déconnecter", url: "/logout" },
   ];
   next();
@@ -107,7 +107,7 @@ app.post("/login", (req, res) => {
   }
 });
 
-app.get("/logout", checkLogin, (req, res) => {
+app.get("/logout", (req, res) => {
   req.session.destroy(() => {
     console.log("Déconnecté");
   });
@@ -154,6 +154,9 @@ app.use((req, res, next) => {
 });
 
 io.on("connection", (socket) => {
+  socket.on("userConnection", (username) => {
+    socket.broadcast.emit("notif", username + "a rejoint le chat");
+  });
   socket.on("chat message", (msg) => {
     io.emit("chat message", msg);
   });
