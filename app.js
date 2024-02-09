@@ -7,8 +7,6 @@ import fs from "node:fs";
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { buildSchema } from "graphql";
-import { graphqlHTTP } from "express-graphql";
 
 /* Modules internes */
 import apiRouter from "./routes/api.js";
@@ -16,21 +14,11 @@ import apiRouter from "./routes/api.js";
 /* Middlewares */
 import bodyParser from "body-parser";
 import session from "express-session";
-
-const schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-`);
-
-const root = {
-  hello: () => {
-    return "Hello world!";
-  },
-};
+import errorHandler from "./middleware/authentication/error.middleware.js";
+import menuManagement from "./middleware/menu-management.middleware.js";
 
 const app = express();
-const port = 8080;
+const port = parseInt(process.env.PORT, 10);
 
 const server = createServer(app);
 const io = new Server(server);
@@ -43,14 +31,6 @@ app.set("views", "./views");
 
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(
-  "/graphql",
-  graphqlHTTP({
-    schema: schema,
-    rootValue: root,
-    graphiql: true,
-  })
-);
 
 app.use(
   session({
@@ -67,17 +47,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((req, res, next) => {
-  res.locals.pages = [
-    { name: "Accueil", url: "/home" },
-    { name: "API", url: "/api" },
-    { name: "Messagerie", url: "/chat" },
-    { name: "Télécharger", url: "/download" },
-    { name: "Not Found", url: "/undefined"},
-    { name: "Se déconnecter", url: "/logout" },
-  ];
-  next();
-});
+app.use(menuManagement);
 
 const checkLogin = (req, res, next) => {
   if (req.session && req.session.user) {
@@ -149,15 +119,17 @@ app.get("/chat", (req, res) => {
   res.render("chat", { activePage: "/chat" });
 });
 
+app.use(errorHandler);
+
 app.use((req, res, next) => {
   res.status(404).render("notFound");
 });
 
 io.on("connection", (socket) => {
   socket.on("userConnection", (username) => {
-    socket.broadcast.emit("notif", username + "a rejoint le chat");
+    socket.broadcast.emit("notif", username + " a rejoint le chat");
   });
-  socket.on("chat message", (msg) => {
-    io.emit("chat message", msg);
+  socket.on("chat", (msg) => {
+    socket.emit("chat", msg);
   });
 });
