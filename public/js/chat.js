@@ -22,6 +22,38 @@ btnJoin.addEventListener("click", () => {
   pseudo = username;
 });
 
+messageInput.addEventListener("focus", () => {
+  socket.emit("typing", pseudo);
+});
+
+messageInput.addEventListener("blur", () => {
+  socket.emit("stopTyping");
+});
+
+messageInput.addEventListener("keypress", (event) => {
+  if (event.key === "Enter") {
+    messageInput.blur();
+
+    let message = messageInput.value;
+
+    if (message.length != 0) {
+      send("me", {
+        pseudo: pseudo,
+        text: message,
+      });
+
+      socket.emit("chat", {
+        pseudo: pseudo,
+        text: message,
+      });
+
+      messageInput.value = "";
+    } else {
+      alert("Saisis ton message");
+    }
+  }
+});
+
 btnSend.addEventListener("click", () => {
   let message = messageInput.value;
 
@@ -46,11 +78,22 @@ socket.on("notif", (notif) => {
   send("notif", notif);
 });
 
+socket.on("stopTyping", () => {
+  if (messages.lastElementChild) {
+    messages.removeChild(messages.lastElementChild);
+  }
+});
+
 socket.on("chat", (chat) => {
   send("other", chat);
 });
 
 function send(type, content) {
+  let currentTime = new Date()
+    .toISOString()
+    .replace(/[-T:.Z]/g, "")
+    .slice(0, 14);
+
   switch (type) {
     case "notif":
       let divNotif = document.createElement("div");
@@ -60,16 +103,20 @@ function send(type, content) {
       break;
     case "me":
       let divMe = document.createElement("div");
-      divMe.classList.add("message", "my-message");
-      divMe.innerHTML = `<div class="name">You</div>
-      <div class="text">${content.message}</div>`;
+      divMe.classList.add("message", "me");
+      divMe.innerHTML = `<div><div class="name"><b>moi</b> ${
+        parseInt(currentTime.slice(8, 10)) + 1
+      }:${currentTime.slice(10, 12)}</div>
+      <div class="text">${content.text}</div></div>`;
       messages.appendChild(divMe);
       break;
     case "other":
       let divOther = document.createElement("div");
-      divOther.classList.add("message", "my-message");
-      divOther.innerHTML = `<div class="name">${content.pseudo}</div>
-      <div class="text">${content.message}</div>`;
+      divOther.classList.add("message", "other");
+      divOther.innerHTML = `<div><div class="name"><b>${content.pseudo}</b> ${
+        parseInt(currentTime.slice(8, 10)) + 1
+      }:${currentTime.slice(10, 12)}</div>
+      <div class="text">${content.text}</div></div>`;
       messages.appendChild(divOther);
       break;
 

@@ -115,7 +115,7 @@ app.get("/download", checkLogin, async (req, res) => {
   });
 });
 
-app.get("/chat", (req, res) => {
+app.get("/chat", checkLogin, (req, res) => {
   res.render("chat", { activePage: "/chat" });
 });
 
@@ -129,7 +129,13 @@ io.on("connection", (socket) => {
   socket.on("userConnection", (username) => {
     socket.broadcast.emit("notif", username + " a rejoint le chat");
   });
+  socket.on("typing", (username) => {
+    socket.broadcast.emit("notif", username + " est en train d'écrire...");
+  });
+  socket.on("stopTyping", () => {
+    socket.broadcast.emit("stopTyping");
+  });
   socket.on("chat", (msg) => {
-    socket.emit("chat", msg);
+    socket.broadcast.emit("chat", msg);
   });
 });
