@@ -139,6 +139,11 @@ nav {
   box-shadow: 5px -5px 0 5px var(--body-bg);
 }
 
+.lorem-ipsum {
+  padding: 0 100px;
+  text-align: justify;
+}
+
 .disable {
   display: none;
 }
