@@ -16,6 +16,7 @@ import bodyParser from "body-parser";
 import session from "express-session";
 import errorHandler from "./middleware/authentication/error.middleware.js";
 import menuManagement from "./middleware/menu-management.middleware.js";
+import checkLogin from "./middleware/check-login.middleware.js";
 
 const app = express();
 const port = parseInt(process.env.PORT, 10);
@@ -48,14 +49,6 @@ app.use((req, res, next) => {
 });
 
 app.use(menuManagement);
-
-const checkLogin = (req, res, next) => {
-  if (req.session && req.session.user) {
-    return next();
-  } else {
-    res.render("unauthorized");
-  }
-};
 
 server.listen(port, () => {
   console.log(`Serveur démarré sur le port ${port}`);
@@ -129,6 +122,9 @@ io.on("connection", (socket) => {
   socket.on("userConnection", (username) => {
     socket.broadcast.emit("notif", username + " a rejoint le chat");
   });
+  socket.on("userDeconnection", (username) => {
+    socket.broadcast.emit("notif", username + " a quitté le chat");
+  });
   socket.on("typing", (username) => {
     socket.broadcast.emit("notif", username + " est en train d'écrire...");
   });
@@ -136,6 +132,23 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("stopTyping");
   });
   socket.on("chat", (msg) => {
+    const badWords = ["merde", "putain", "connard", "fils de pute"];
+
+    // Vérifier si le message contient des mots interdits
+    const containsBadWord = badWords.some((badWord) => {
+      // Utiliser includes() pour vérifier la présence du mot interdit (insensible à la casse)
+      return msg.text.toLowerCase().includes(badWord);
+    });
+
+    // Si le message contient un mot interdit, le remplacer par des astérisques
+    if (containsBadWord) {
+      // Remplacer chaque occurrence du mot interdit par des astérisques
+      badWords.forEach((badWord) => {
+        const regex = new RegExp(badWord, "gi");
+        msg.text = msg.text.replace(regex, (match) => "*".repeat(match.length));
+      });
+    }
+
     socket.broadcast.emit("chat", msg);
   });
 });

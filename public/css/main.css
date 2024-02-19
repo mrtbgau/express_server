@@ -103,7 +103,7 @@ nav {
 }
 
 .nav-list li.active {
-  /* view-transition-name: nav; */
+  view-transition-name: nav;
   display: block;
   background: var(--body-bg);
   position: relative;
@@ -137,18 +137,6 @@ nav {
   border-radius: 0 var(--border-radius) 0 0;
   bottom: calc(var(--border-radius) * -1);
   box-shadow: 5px -5px 0 5px var(--body-bg);
-}
-
-.nav-list li:nth-child(1) a {
-  view-transition-name: test;
-}
-
-.nav-list li:nth-child(2) a {
-  view-transition-name: test-2;
-}
-
-.nav-list li:nth-child(3) a {
-  view-transition-name: test-3;
 }
 
 .disable {
